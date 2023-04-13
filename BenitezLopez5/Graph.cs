@@ -4,9 +4,14 @@ public class Graph: IProcessData, IGraphAlgorithm
 {
     private List<Node>? _nodes;
 
-    private void ResetVistedSet()
+    public Graph()
     {
 
+    }
+    
+    private void ResetVistedSet()
+    {
+        
     }
 
     private Node? FindAdjacentUnvisitedNode(Node node)

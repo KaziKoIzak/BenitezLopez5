@@ -2,8 +2,8 @@ namespace GraphNS;
 
 public interface IGraphAlgorithm
 {
-    public Queue<Node> Queue {get; set;}
-    public Stack<Node> Stack {get; set;}
+    public Queue<Node> Queue{get; set;}
+    public Stack<Node> Stack{get; set;}
     
     public abstract void BreadthFS(int start);
 
