@@ -3,6 +3,8 @@ namespace GraphNS;
 public class Graph: IProcessData, IGraphAlgorithm
 {
     private List<Node>? _nodes;
+    public Queue<Node> Queue{get; set;}
+    public Stack<Node> Stack{get; set;}
 
     public Graph()
     {
@@ -11,7 +13,8 @@ public class Graph: IProcessData, IGraphAlgorithm
     
     private void ResetVistedSet()
     {
-        
+        for(int i = 0; i < _nodes.Count; i++)
+            _nodes[i].WasVisited = false;
     }
 
     private Node? FindAdjacentUnvisitedNode(Node node)
@@ -21,7 +24,7 @@ public class Graph: IProcessData, IGraphAlgorithm
 
     private static void ViewNode(Node node)
     {
-
+        Console.Write($"{node} ");
     }
 
     public void BreadthFS(int start)
