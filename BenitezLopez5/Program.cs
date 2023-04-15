@@ -6,7 +6,7 @@ public class Program
     {
         Graph g2 = new Graph("jo");
 
-        Graph graph = new Graph("C:\\Users\\Dell Test\\Desktop\\SchoolStuff\\OOP\\HansonOOP5\\HansonOOP5\\inClassGraph.json");
+        Graph graph = new Graph("/Users/izakbenitez-lopez/Desktop/OOP/BenitezLopez5/BenitezLopez5");
 
         for (var f = 0; f < 4; f++)
         {
@@ -22,7 +22,7 @@ public class Program
 
         Graph graph3 = new Graph ("filename.json");
 
-        graph3 = new Graph ("C:\\Users\\Dell Test\\Desktop\\SchoolStuff\\OOP");
+        graph3 = new Graph ("/Users/izakbenitez-lopez/Desktop/OOP");
 
         for (var f = 0; f < 5; f++)
         {
