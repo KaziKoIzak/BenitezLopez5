@@ -1,6 +1,6 @@
 namespace GraphNS;
 
-public interface IGraphAlgorithm
+public interface ISearchAlgorithm
 {
     public Queue<Node> Queue{get; set;}
     public Stack<Node> Stack{get; set;}
