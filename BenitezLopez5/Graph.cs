@@ -4,26 +4,40 @@ using System.Text.Json;
 
 public class Graph: IProcessData, ISearchAlgorithm
 {
-    private List<Node>? _nodes;
+    private List<Node> _nodes{get; set;}
     public Queue<Node> Queue{get; set;}
     public Stack<Node> Stack{get; set;}
 
     public Graph(string path)
     {       
-         _nodes = new List<Node>();
+        _nodes = new List<Node>();
 
         ReadData(path);
     }
     
     private void ResetVistedSet()
     {
-        foreach(Node n in _nodes)
-            n.WasVisited = false;
+        foreach(Node index in _nodes)
+            index.WasVisited = false;
     }
 
     private Node? FindAdjacentUnvisitedNode(Node node)
     {
+        if (node.AdjacentNodes == null)
+            return null;
+        else 
+        {
+            for (int i = 0; i < node.AdjacentNodes.Count; i++)
+            {
+                if (_nodes[i].Id == node.Id)
+                    continue;
+                if (node.AdjacentNodes[i] == true)
+                    if (_nodes[i].WasVisited == false)
+                        return _nodes[i];
+            }
 
+            return null;
+        }
     }
 
     private static void ViewNode(Node node)
@@ -36,12 +50,82 @@ public class Graph: IProcessData, ISearchAlgorithm
 
     public void BreadthFS(int start)
     {
+        Queue = new Queue<Node>();
+        Node temporary = new Node();
 
+        _nodes[start].WasVisited = true;
+
+        Queue.Enqueue(_nodes[start]);
+    
+        while (Queue.Count > 0)
+        {
+            temporary = Queue.Dequeue();
+            ViewNode(temporary);
+
+            while (FindAdjacentUnvisitedNode(temporary) != null)
+            {
+                Node temp = FindAdjacentUnvisitedNode(temporary);
+
+                Queue.Enqueue(temp);
+
+                temp.WasVisited = true;
+            }
+        }
+
+        ResetVistedSet();
     }
 
     public void DepthFS(int start)
     {
-        
+        Stack = new Stack<Node>();
+        Node temporary = new Node();
+
+        _nodes[start].WasVisited = true;
+
+        if(start == null)
+                return;
+        else if(_nodes.Count == 0)
+                return;
+
+        Stack.Push (_nodes[start]);
+        while (Stack.Count > 0)
+        {
+            temporary = Stack.Peek();
+
+            if (temporary.WasVisited && FindAdjacentUnvisitedNode(temporary) == null)
+            {
+                temporary = Stack.Pop();
+            }
+
+            if (temporary.WasVisited && FindAdjacentUnvisitedNode(temporary) != null)
+            {
+                Node temp = FindAdjacentUnvisitedNode(temporary);
+
+                Stack.Push(temp);
+            }
+
+            if (!temporary.WasVisited && FindAdjacentUnvisitedNode(temporary) != null)
+            {
+                temporary.WasVisited = true;
+
+                ViewNode(temporary);
+
+                Node temp = FindAdjacentUnvisitedNode(temporary);
+
+                Stack.Push(temp);
+
+                if (!temporary.WasVisited && FindAdjacentUnvisitedNode (temporary) == null)
+                {
+                    temporary.WasVisited = true;
+
+                    ViewNode(temporary);
+
+                    Stack.Pop();
+                }
+            }
+
+            ResetVistedSet();
+        }
     }
 
     public void ReadData(string path)
@@ -49,27 +133,12 @@ public class Graph: IProcessData, ISearchAlgorithm
         try
         {
             string json = File.ReadAllText(path);
-            List<Node> nodeDataList = JsonSerializer.Deserialize<List<Node>>(json);
+            var nodeDataList = JsonSerializer.Deserialize<List<Node>>(json);
+            _nodes = (List<Node>) nodeDataList;
 
-            foreach (Node nodeData in nodeDataList)
-            {
-               Node node = new Node(nodeData.Id);
+            json = JsonSerializer.Serialize<List<Node>>(_nodes);
 
-                foreach (int adjacentNodeId in nodeData.AdjacentNodes)
-                {
-                    Node adjacentNode = _nodes.Find(n => n.Id == adjacentNodeId);
-
-                    if (adjacentNode == null)
-                    {
-                        adjacentNode = new Node(adjacentNodeId);
-                        _nodes.Add(adjacentNode);
-                    }
-
-                    node.AdjacentNodes.Add(adjacentNode);
-                }
-
-                _nodes.Add(node);
-            }
+            File.WriteAllText(path, json);
         }
         catch (FileNotFoundException)
         {
