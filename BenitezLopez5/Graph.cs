@@ -56,8 +56,8 @@ public class Graph: IProcessData, ISearchAlgorithm
         _nodes[start].WasVisited = true;
 
         Queue.Enqueue(_nodes[start]);
-    
-        while (Queue.Count > 0)
+
+        while(Queue.Any())
         {
             temporary = Queue.Dequeue();
             ViewNode(temporary);
@@ -87,45 +87,21 @@ public class Graph: IProcessData, ISearchAlgorithm
         else if(_nodes.Count == 0)
                 return;
 
-        Stack.Push (_nodes[start]);
-        while (Stack.Count > 0)
+        Stack.Push(_nodes[start]);
+
+        while(Stack.Any())
         {
             temporary = Stack.Peek();
+            Stack.Pop();
 
-            if (temporary.WasVisited && FindAdjacentUnvisitedNode(temporary) == null)
-            {
-                temporary = Stack.Pop();
-            }
-
-            if (temporary.WasVisited && FindAdjacentUnvisitedNode(temporary) != null)
-            {
-                Node temp = FindAdjacentUnvisitedNode(temporary);
-
-                Stack.Push(temp);
-            }
-
-            if (!temporary.WasVisited && FindAdjacentUnvisitedNode(temporary) != null)
-            {
-                temporary.WasVisited = true;
-
+            if(temporary.WasVisited == false)
                 ViewNode(temporary);
-
-                Node temp = FindAdjacentUnvisitedNode(temporary);
-
-                Stack.Push(temp);
-
-                if (!temporary.WasVisited && FindAdjacentUnvisitedNode (temporary) == null)
-                {
-                    temporary.WasVisited = true;
-
-                    ViewNode(temporary);
-
-                    Stack.Pop();
-                }
-            }
-
-            ResetVistedSet();
+            foreach(Node n in _nodes)
+                if(!n.WasVisited)
+                    Stack.Push(n);
         }
+
+        ResetVistedSet();
     }
 
     public void ReadData(string path)
