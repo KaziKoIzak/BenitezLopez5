@@ -6,7 +6,7 @@ public class Program
     {
         Graph g2 = new Graph("jo");
 
-        Graph graph = new Graph("/Users/izakbenitez-lopez/Desktop/OOP/BenitezLopez5/BenitezLopez5");
+        Graph graph = new Graph("BenitezLopez5/trai.json");
 
         for (var f = 0; f < 4; f++)
         {
@@ -20,9 +20,7 @@ public class Program
 
         Console.WriteLine("\n\n");
 
-        Graph graph3 = new Graph ("filename.json");
-
-        graph3 = new Graph ("/Users/izakbenitez-lopez/Desktop/OOP");
+        Graph graph3 = new Graph ("attempt.json");
 
         for (var f = 0; f < 5; f++)
         {

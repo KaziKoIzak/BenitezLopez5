@@ -1,7 +1,6 @@
 namespace GraphNS;
 using System.Text.Json;
 
-
 public class Graph: IProcessData, ISearchAlgorithm
 {
     private List<Node> _nodes{get; set;}
