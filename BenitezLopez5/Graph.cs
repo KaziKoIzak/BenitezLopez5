@@ -20,31 +20,24 @@ public class Graph: IProcessData, ISearchAlgorithm
             index.WasVisited = false;
     }
 
-    private Node FindAdjacentUnvisitedNode(Node node)
+    private Node? FindAdjacentUnvisitedNode(Node node)
     {
-        if (node.AdjacentNodes == null)
-            return null;
-        else 
-        {
+        if(node.AdjacentNodes != null) 
             for (int i = 0; i < node.AdjacentNodes.Count; i++)
             {
-                if (_nodes[i].Id == node.Id)
+                if(_nodes[i].Id == node.Id || node.AdjacentNodes[i] == false || _nodes[i].WasVisited == true)
                     continue;
-                if (node.AdjacentNodes[i] == true)
-                    if (_nodes[i].WasVisited == false)
-                        return _nodes[i];
+                else
+                    return _nodes[i];
             }
 
-            return null;
-        }
+        return null;
     }
 
     private static void ViewNode(Node node)
     {
-        if(node == null)
-            return;
-        else
-            Console.Write($"{node.Id} ");    
+        if(node != null)
+            Console.Write($"{node.Id} ");
     }
 
     public void BreadthFS(int start)
@@ -77,34 +70,28 @@ public class Graph: IProcessData, ISearchAlgorithm
         Stack = new Stack<Node>();
         Node temporary = new Node();
 
-        if(start == null)
-            return;
-        else if(_nodes.Count == 0)
-            return;
-        else if(start >= _nodes.Count)
-            return;
-
         Stack.Push(_nodes[start]);
 
         while (Stack.Any())
         {
             temporary = Stack.Peek();
 
-            if (temporary.WasVisited && FindAdjacentUnvisitedNode(temporary) == null)
+            if(temporary.WasVisited && FindAdjacentUnvisitedNode(temporary) == null)
                 temporary = Stack.Pop();
-            if (temporary.WasVisited && FindAdjacentUnvisitedNode(temporary) != null)
+            if(temporary.WasVisited && FindAdjacentUnvisitedNode(temporary) != null)
                 Stack.Push(FindAdjacentUnvisitedNode(temporary));
-            if (!temporary.WasVisited && FindAdjacentUnvisitedNode(temporary) != null)
+            if(!temporary.WasVisited && FindAdjacentUnvisitedNode(temporary) != null)
             {
                 temporary.WasVisited = true;
                 ViewNode(temporary);
 
                 Stack.Push(FindAdjacentUnvisitedNode(temporary));
             }
-            if (!temporary.WasVisited && FindAdjacentUnvisitedNode(temporary) == null)
+            if(!temporary.WasVisited && FindAdjacentUnvisitedNode(temporary) == null)
             {
                 temporary.WasVisited = true;
                 ViewNode(temporary);
+
                 Stack.Pop();
             }
         }
