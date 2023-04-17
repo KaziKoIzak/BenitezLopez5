@@ -14,10 +14,12 @@
 ***************************************************************************************************/
 namespace GraphNS;
 
+//Driving program
 public class Program
 {
     static void Main(string[] args)
     {
+        //File not found tests
         Graph graph0 = new Graph("jo");
 
         Graph graph = new Graph("BenitezLopez5/trail.json");
@@ -48,6 +50,7 @@ public class Program
 
         Console.WriteLine("\n\n");
 
+        //File found tests
         Graph graph3 = new Graph ("/Users/izakbenitez-lopez/Desktop/OOP/BenitezLopez5/attempt.json");
 
         for (int f = 0; f < 11; f++)

@@ -15,6 +15,7 @@
 namespace GraphNS;
 using System.Text.Json;
 
+//Actual Graph Class
 public class Graph: IProcessData, ISearchAlgorithm
 {
     //Variable
@@ -76,7 +77,7 @@ public class Graph: IProcessData, ISearchAlgorithm
             //Try to find the next adjacent node in the list
             for (int i = 0; i < node.AdjacentNodes.Count; i++)
             {
-                if(_nodes[i].Id == node.Id || node.AdjacentNodes[i] == false || _nodes[i].WasVisited == true)
+                if(node.AdjacentNodes[i] == false || _nodes[i].WasVisited == true)
                     continue;
                 else
                     return _nodes[i];
@@ -96,6 +97,7 @@ public class Graph: IProcessData, ISearchAlgorithm
     *****************************************************************************************************/
     private static void ViewNode(Node node)
     {
+        //Only print if there is something there
         if(node != null)
             Console.Write($"{node.Id} ");
     }
@@ -113,18 +115,22 @@ public class Graph: IProcessData, ISearchAlgorithm
     **************************************************************************************************/
     public void BreadthFS(int start)
     {
+        //Create temporary and Queue
         Queue = new Queue<Node>();
         Node temporary = new Node();
 
+        //Start the queue visited
         _nodes[start].WasVisited = true;
-
         Queue.Enqueue(_nodes[start]);
 
+        //Do the algorithm till the Queue is done
         while(Queue.Any())
         {
+            //Dequeue Queue and vew temporary
             temporary = Queue.Dequeue();
             ViewNode(temporary);
 
+            //Find the next adjacent node
             while (FindAdjacentUnvisitedNode(temporary) != null)
             {
                 Queue.Enqueue(FindAdjacentUnvisitedNode(temporary));
@@ -133,6 +139,7 @@ public class Graph: IProcessData, ISearchAlgorithm
             }
         }
 
+        //Reset Visited Nodes
         ResetVistedSet();
     }
 
@@ -150,15 +157,19 @@ public class Graph: IProcessData, ISearchAlgorithm
     **************************************************************************************************/
     public void DepthFS(int start)
     {
+        //Create a new stack and temporary
         Stack = new Stack<Node>();
         Node temporary = new Node();
 
+        //Push onto stack beginnings
         Stack.Push(_nodes[start]);
 
+        //Continue DepthFS algorithm till Stack empty
         while (Stack.Any())
         {
             temporary = Stack.Peek();
 
+            //Cases if either temporary or adjacents are null
             if(temporary.WasVisited && FindAdjacentUnvisitedNode(temporary) == null)
                 temporary = Stack.Pop();
             if(temporary.WasVisited && FindAdjacentUnvisitedNode(temporary) != null)
@@ -178,6 +189,8 @@ public class Graph: IProcessData, ISearchAlgorithm
                 Stack.Pop();
             }
         }
+
+        //Reset visited set
         ResetVistedSet();
     }
 
@@ -194,22 +207,27 @@ public class Graph: IProcessData, ISearchAlgorithm
     **************************************************************************************************/
     public void ReadData(string path)
     {
+        //Check if you can actually use the JSON file
         try
         {
             string json = File.ReadAllText(path);
             _nodes = JsonSerializer.Deserialize<List<Node>>(json)!;
 
+            //Reserialize information
             json = JsonSerializer.Serialize<List<Node>>(_nodes);
             File.WriteAllText(path, json);
         }
+        //If the file isn't found
         catch (FileNotFoundException)
         {
             Console.WriteLine($"File not found: {path}");
         }
+        //If JSON can't be read
         catch (JsonException)
         {
             Console.WriteLine($"Error reading data from file: {path}");
         }
+        //If an unknown error happens
         catch(Exception ex)
         {
             Console.WriteLine("\nIt looks like there was an unkown issue opening the json file located at file path: " + path + "");
