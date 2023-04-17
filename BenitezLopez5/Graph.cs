@@ -1,12 +1,11 @@
 namespace GraphNS;
 using System.Text.Json;
-using System.Linq;
 
 public class Graph: IProcessData, ISearchAlgorithm
 {
-    private List<Node> _nodes{get; set;}
-    public Queue<Node> Queue{get; set;}
-    public Stack<Node> Stack{get; set;}
+    private List<Node> _nodes;
+    public Queue<Node> Queue;
+    public Stack<Node> Stack;
 
     public Graph(string path)
     {       
@@ -91,42 +90,57 @@ public class Graph: IProcessData, ISearchAlgorithm
         {
             temporary = Stack.Peek();
 
-            if(temporary.WasVisited)
+            if (temporary.WasVisited && FindAdjacentUnvisitedNode(temporary) == null)
+                temporary = Stack.Pop();
+            if (temporary.WasVisited && FindAdjacentUnvisitedNode(temporary) != null)
+                Stack.Push(FindAdjacentUnvisitedNode(temporary));
+            if (!temporary.WasVisited && FindAdjacentUnvisitedNode(temporary) != null)
             {
-                if(FindAdjacentUnvisitedNode(temporary) == null)
-                    temporary = Stack.Pop();
-                else
-                    Stack.Push(FindAdjacentUnvisitedNode(temporary));
-            }
-            else
-            {
-                if(FindAdjacentUnvisitedNode(temporary) != null)
-                {
-                    temporary.WasVisited = true;
-                    ViewNode(temporary);
+                temporary.WasVisited = true;
+                ViewNode(temporary);
 
-                    Stack.Push(FindAdjacentUnvisitedNode(temporary));
-                }
-                else
-                {
-                    temporary.WasVisited = true;
-                    ViewNode(temporary);
-                    Stack.Pop();
-                }
+                Stack.Push(FindAdjacentUnvisitedNode(temporary));
             }
+            if (!temporary.WasVisited && FindAdjacentUnvisitedNode(temporary) == null)
+            {
+                temporary.WasVisited = true;
+                ViewNode(temporary);
+                Stack.Pop();
+            }
+
+            // if(temporary.WasVisited)
+            // {
+            //     if(FindAdjacentUnvisitedNode(temporary) == null)
+            //         temporary = Stack.Pop();
+            //     else
+            //         Stack.Push(FindAdjacentUnvisitedNode(temporary));
+            // }
+            // else
+            // {
+            //     if(FindAdjacentUnvisitedNode(temporary) != null)
+            //     {
+            //         temporary.WasVisited = true;
+            //         ViewNode(temporary);
+
+            //         Stack.Push(FindAdjacentUnvisitedNode(temporary));
+            //     }
+            //     else
+            //     {
+            //         temporary.WasVisited = true;
+            //         ViewNode(temporary);
+            //         Stack.Pop();
+            //     }
+            // }
         }
         ResetVistedSet();
     }
 
     public void ReadData(string path)
     {
+        string? json = null;
         try
         {
-            string json = File.ReadAllText(path);
-            _nodes = JsonSerializer.Deserialize<List<Node>>(json)!;
-
-            json = JsonSerializer.Serialize<List<Node>>(_nodes);
-            File.WriteAllText(path, json);
+            json = File.ReadAllText(path);
         }
         catch (FileNotFoundException)
         {
@@ -140,6 +154,16 @@ public class Graph: IProcessData, ISearchAlgorithm
         {
             Console.WriteLine("\nIt looks like there was an issue opening the json file located at file path: " + path + "");
             Console.WriteLine("Error Message: " + ex.Message + "\n");
+        }
+
+        if(json!= null)
+        {
+            var node = JsonSerializer.Deserialize<List<Node>>(json)!;
+            _nodes = new List<Node>();
+            _nodes = (List<Node>) node;
+
+            json = JsonSerializer.Serialize<List<Node>>(_nodes);
+            File.WriteAllText(path, json);
         }
     }
 }
