@@ -4,8 +4,8 @@ using System.Text.Json;
 public class Graph: IProcessData, ISearchAlgorithm
 {
     private List<Node> _nodes;
-    public Queue<Node> Queue;
-    public Stack<Node> Stack;
+    public Queue<Node> Queue{get; set;}
+    public Stack<Node> Stack{get; set;}
 
     public Graph(string path)
     {       
