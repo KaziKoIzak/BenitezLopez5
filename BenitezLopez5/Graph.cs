@@ -77,16 +77,16 @@ public class Graph: IProcessData, ISearchAlgorithm
         Stack = new Stack<Node>();
         Node temporary = new Node();
 
-        _nodes[start].WasVisited = true;
-
         if(start == null)
             return;
         else if(_nodes.Count == 0)
             return;
+        else if(start >= _nodes.Count)
+            return;
 
         Stack.Push(_nodes[start]);
 
-        while (Stack.Count > 0)
+        while (Stack.Any())
         {
             temporary = Stack.Peek();
 
@@ -113,10 +113,13 @@ public class Graph: IProcessData, ISearchAlgorithm
 
     public void ReadData(string path)
     {
-        string jsoner = null;
         try
         {
-            jsoner = File.ReadAllText(path);
+            string json = File.ReadAllText(path);
+            _nodes = JsonSerializer.Deserialize<List<Node>>(json)!;
+
+            json = JsonSerializer.Serialize<List<Node>>(_nodes);
+            File.WriteAllText(path, json);
         }
         catch (FileNotFoundException)
         {
@@ -128,18 +131,8 @@ public class Graph: IProcessData, ISearchAlgorithm
         }
         catch(Exception ex)
         {
-            Console.WriteLine("\nIt looks like there was an issue opening the json file located at file path: " + path + "");
+            Console.WriteLine("\nIt looks like there was an unkown issue opening the json file located at file path: " + path + "");
             Console.WriteLine("Error Message: " + ex.Message + "\n");
-        }
-
-        if(jsoner!= null)
-        {
-            var nodes = JsonSerializer.Deserialize<List<Node>>(jsoner)!;
-            _nodes = new List<Node>();
-            _nodes = (List<Node>) nodes;
-
-            jsoner = JsonSerializer.Serialize<List<Node>>(_nodes);
-            File.WriteAllText(path, jsoner);
         }
     }
 }

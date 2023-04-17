@@ -13,17 +13,17 @@ public class Node
         set{AdjNodes = value;}
     }
 
-    public Node(List<Boolean> AdjNodes = null, int Id = -1, Boolean WasVisited = false)
+    public Node(List<Boolean> AdjacentNodes = null, int Id = -1, Boolean WasVisited = false)
     {
 
-        if (AdjNodes == null)
-            AdjacentNodes = new List<Boolean>();
+        if (AdjacentNodes == null)
+            this.AdjacentNodes = new List<Boolean>();
         else
         {
-            AdjacentNodes = new List<Boolean>();
-            for (int i = 0; i < AdjNodes.Count; i++)
+            this.AdjacentNodes = new List<Boolean>();
+            for (int i = 0; i < AdjacentNodes.Count; i++)
             {
-                AdjacentNodes.Add(AdjNodes[i]);
+                this.AdjacentNodes.Add(AdjacentNodes[i]);
             }
             this.Id = Id;
             this.WasVisited = WasVisited;
