@@ -1,5 +1,6 @@
 namespace GraphNS;
 using System.Text.Json;
+using System.Linq;
 
 public class Graph: IProcessData, ISearchAlgorithm
 {
@@ -79,10 +80,10 @@ public class Graph: IProcessData, ISearchAlgorithm
 
         _nodes[start].WasVisited = true;
 
-        if(start == null)
-                return;
-        else if(_nodes.Count == 0)
-                return;
+        if(_nodes.Count == 0)
+            return;
+        else if(start >= _nodes.Count)
+            return;
 
         Stack.Push(_nodes[start]);
 
@@ -122,11 +123,9 @@ public class Graph: IProcessData, ISearchAlgorithm
         try
         {
             string json = File.ReadAllText(path);
-            var nodeDataList = JsonSerializer.Deserialize<List<Node>>(json);
-            _nodes = (List<Node>) nodeDataList;
+            _nodes = JsonSerializer.Deserialize<List<Node>>(json)!;
 
             json = JsonSerializer.Serialize<List<Node>>(_nodes);
-
             File.WriteAllText(path, json);
         }
         catch (FileNotFoundException)
@@ -136,6 +135,11 @@ public class Graph: IProcessData, ISearchAlgorithm
         catch (JsonException)
         {
             Console.WriteLine($"Error reading data from file: {path}");
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine("\nIt looks like there was an issue opening the json file located at file path: " + path + "");
+            Console.WriteLine("Error Message: " + ex.Message + "\n");
         }
     }
 }
