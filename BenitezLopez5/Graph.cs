@@ -20,7 +20,7 @@ public class Graph: IProcessData, ISearchAlgorithm
             index.WasVisited = false;
     }
 
-    private Node? FindAdjacentUnvisitedNode(Node node)
+    private Node FindAdjacentUnvisitedNode(Node node)
     {
         if (node.AdjacentNodes == null)
             return null;
@@ -79,9 +79,9 @@ public class Graph: IProcessData, ISearchAlgorithm
 
         _nodes[start].WasVisited = true;
 
-        if(_nodes.Count == 0)
+        if(start == null)
             return;
-        else if(start >= _nodes.Count)
+        else if(_nodes.Count == 0)
             return;
 
         Stack.Push(_nodes[start]);
@@ -107,40 +107,16 @@ public class Graph: IProcessData, ISearchAlgorithm
                 ViewNode(temporary);
                 Stack.Pop();
             }
-
-            // if(temporary.WasVisited)
-            // {
-            //     if(FindAdjacentUnvisitedNode(temporary) == null)
-            //         temporary = Stack.Pop();
-            //     else
-            //         Stack.Push(FindAdjacentUnvisitedNode(temporary));
-            // }
-            // else
-            // {
-            //     if(FindAdjacentUnvisitedNode(temporary) != null)
-            //     {
-            //         temporary.WasVisited = true;
-            //         ViewNode(temporary);
-
-            //         Stack.Push(FindAdjacentUnvisitedNode(temporary));
-            //     }
-            //     else
-            //     {
-            //         temporary.WasVisited = true;
-            //         ViewNode(temporary);
-            //         Stack.Pop();
-            //     }
-            // }
         }
         ResetVistedSet();
     }
 
     public void ReadData(string path)
     {
-        string? json = null;
+        string jsoner = null;
         try
         {
-            json = File.ReadAllText(path);
+            jsoner = File.ReadAllText(path);
         }
         catch (FileNotFoundException)
         {
@@ -156,14 +132,14 @@ public class Graph: IProcessData, ISearchAlgorithm
             Console.WriteLine("Error Message: " + ex.Message + "\n");
         }
 
-        if(json!= null)
+        if(jsoner!= null)
         {
-            var node = JsonSerializer.Deserialize<List<Node>>(json)!;
+            var nodes = JsonSerializer.Deserialize<List<Node>>(jsoner)!;
             _nodes = new List<Node>();
-            _nodes = (List<Node>) node;
+            _nodes = (List<Node>) nodes;
 
-            json = JsonSerializer.Serialize<List<Node>>(_nodes);
-            File.WriteAllText(path, json);
+            jsoner = JsonSerializer.Serialize<List<Node>>(_nodes);
+            File.WriteAllText(path, jsoner);
         }
     }
 }
