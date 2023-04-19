@@ -22,44 +22,16 @@ public class Program
         //File not found tests
         Graph graph0 = new Graph("jo");
 
-        Graph graph = new Graph("BenitezLopez5/trail.json");
-
-        for (var f = 0; f < 0; f++)
-        {
-            Console.Write("DFS {0}:  ", f);
-            graph.DepthFS(f);
-            Console.WriteLine();
-            Console.Write("BFS {0}:  ", f);
-            graph.BreadthFS(f);
-            Console.WriteLine();
-        }
-
-        Console.WriteLine("\n\n");
-
-        Graph graph2 = new Graph ("attempt.json");
-
-        for (var f = 0; f < 0; f++)
-        {
-            Console.Write("DFS {0}:  ", f);
-            graph2.DepthFS(f);
-            Console.WriteLine();
-            Console.Write("BFS {0}:  ", f);
-            graph2.BreadthFS(f);
-            Console.WriteLine();
-        }   
-
-        Console.WriteLine("\n\n");
-
         //File found tests
         Graph graph3 = new Graph ("/Users/izakbenitez-lopez/Desktop/OOP/BenitezLopez5/attempt.json");
 
-        for (int f = 0; f < 11; f++)
+        for (int i = 0; i < 11; i++)
         {
-            Console.Write("DFS {0}:  ", f);
-            graph3.DepthFS(f);
+            Console.Write($"DFS {i}:  ");
+            graph3.DepthFS(i);
             Console.WriteLine();
-            Console.Write("BFS {0}:  ", f);
-            graph3.BreadthFS(f);
+            Console.Write($"BFS {i}:  ");
+            graph3.BreadthFS(i);
             Console.WriteLine();
         }   
 
@@ -67,13 +39,13 @@ public class Program
 
         Graph graph4 = new Graph ("/Users/izakbenitez-lopez/Desktop/OOP/BenitezLopez5/BenitezLopez5/trail.json");
 
-        for (int f = 0; f < 5; f++)
+        for (int j = 0; j < 5; j++)
         {
-            Console.Write("DFS {0}:  ", f);
-            graph4.DepthFS(f);
+            Console.Write($"DFS {j}:  ");
+            graph4.DepthFS(j);
             Console.WriteLine();
-            Console.Write("BFS {0}:  ", f);
-            graph4.BreadthFS(f);
+            Console.Write($"BFS {j}:  ");
+            graph4.BreadthFS(j);
             Console.WriteLine();
         }   
     }
