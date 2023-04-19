@@ -20,8 +20,8 @@ public class Graph: IProcessData, ISearchAlgorithm
 {
     //Variable
     private List<Node> _nodes;
-    public Queue<Node>? Queue;
-    public Stack<Node>? Stack;
+    public Queue<Node> Queue{get; set;}
+    public Stack<Node> Stack{get; set;}
 
     /****************************************************************************************************
     *** METHOD: Overloaded/Default Constructor
@@ -37,6 +37,8 @@ public class Graph: IProcessData, ISearchAlgorithm
     public Graph(string path)
     {    
         _nodes = new List<Node>();
+        Queue = new Queue<Node>();
+        Stack = new Stack<Node>();
 
         //Read the data and see if it is legit   
         ReadData(path);
@@ -117,13 +119,12 @@ public class Graph: IProcessData, ISearchAlgorithm
     **************************************************************************************************/
     public void BreadthFS(int start)
     {
-        //Create temporary and Queue
-        Queue = new Queue<Node>();
+        //Create temporary
         Node temporary = new Node();
 
         //Start the queue visited
         _nodes[start].WasVisited = true;
-        Queue.Enqueue(_nodes[start]);
+        Queue!.Enqueue(_nodes[start]);
 
         //Do the algorithm till the Queue is done
         while(Queue.Any())
@@ -159,12 +160,11 @@ public class Graph: IProcessData, ISearchAlgorithm
     **************************************************************************************************/
     public void DepthFS(int start)
     {
-        //Create a new stack and temporary
-        Stack = new Stack<Node>();
+        //Create a temporary
         Node temporary = new Node();
 
         //Push onto stack beginnings
-        Stack.Push(_nodes[start]);
+        Stack!.Push(_nodes[start]);
 
         //Continue DepthFS algorithm till Stack empty
         while (Stack.Any())
