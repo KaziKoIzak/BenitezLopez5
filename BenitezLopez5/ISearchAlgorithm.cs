@@ -18,8 +18,16 @@ namespace GraphNS;
 public interface ISearchAlgorithm
 {
     //Interface Variables that is declared in the Graph file
-    public Queue<Node> Queue{get; set;}
-    public Stack<Node> Stack{get; set;}
+    public Queue<Node> Queue
+    {   
+        get{return Queue;} 
+        set{Queue = value;}
+    }
+    public Stack<Node> Stack
+    {   
+        get{return Stack;} 
+        set{Stack = value;}
+    }
     
     /***************************************************************************************************
     *** METHOD: BreadthFS

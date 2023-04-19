@@ -20,8 +20,8 @@ public class Graph: IProcessData, ISearchAlgorithm
 {
     //Variable
     private List<Node> _nodes;
-    public Queue<Node> Queue{get; set;}
-    public Stack<Node> Stack{get; set;}
+    public Queue<Node>? Queue;
+    public Stack<Node>? Stack;
 
     /****************************************************************************************************
     *** METHOD: Overloaded/Default Constructor
@@ -36,6 +36,8 @@ public class Graph: IProcessData, ISearchAlgorithm
     ****************************************************************************************************/
     public Graph(string path)
     {    
+        _nodes = new List<Node>();
+
         //Read the data and see if it is legit   
         ReadData(path);
     }
@@ -133,9 +135,9 @@ public class Graph: IProcessData, ISearchAlgorithm
             //Find the next adjacent node
             while (FindAdjacentUnvisitedNode(temporary) != null)
             {
-                Queue.Enqueue(FindAdjacentUnvisitedNode(temporary));
+                    Queue.Enqueue(FindAdjacentUnvisitedNode(temporary)!);
 
-                FindAdjacentUnvisitedNode(temporary).WasVisited = true;
+                    FindAdjacentUnvisitedNode(temporary)!.WasVisited = true;
             }
         }
 
@@ -186,10 +188,10 @@ public class Graph: IProcessData, ISearchAlgorithm
                 temporary.WasVisited = true;
                 ViewNode(temporary);
 
-                Stack.Push(FindAdjacentUnvisitedNode(temporary));
+                Stack.Push(FindAdjacentUnvisitedNode(temporary)!);
             }
             if(temporary.WasVisited && FindAdjacentUnvisitedNode(temporary) != null)
-                Stack.Push(FindAdjacentUnvisitedNode(temporary));
+                Stack.Push(FindAdjacentUnvisitedNode(temporary)!);
         }
 
         //Reset visited set
