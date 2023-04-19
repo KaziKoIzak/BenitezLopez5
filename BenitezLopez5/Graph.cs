@@ -172,13 +172,6 @@ public class Graph: IProcessData, ISearchAlgorithm
             //Cases if either temporary or adjacents are null
             //If temporary false, make them true then push to stack next adjacent if there is adjacent
             //If temporary true, go to next node if there is push, if not pop
-            if(!temporary.WasVisited && FindAdjacentUnvisitedNode(temporary) != null)
-            {
-                temporary.WasVisited = true;
-                ViewNode(temporary);
-
-                Stack.Push(FindAdjacentUnvisitedNode(temporary));
-            }
             if(!temporary.WasVisited && FindAdjacentUnvisitedNode(temporary) == null)
             {
                 temporary.WasVisited = true;
@@ -188,6 +181,13 @@ public class Graph: IProcessData, ISearchAlgorithm
             }
             if(temporary.WasVisited && FindAdjacentUnvisitedNode(temporary) == null)
                 temporary = Stack.Pop();
+            if(!temporary.WasVisited && FindAdjacentUnvisitedNode(temporary) != null)
+            {
+                temporary.WasVisited = true;
+                ViewNode(temporary);
+
+                Stack.Push(FindAdjacentUnvisitedNode(temporary));
+            }
             if(temporary.WasVisited && FindAdjacentUnvisitedNode(temporary) != null)
                 Stack.Push(FindAdjacentUnvisitedNode(temporary));
         }

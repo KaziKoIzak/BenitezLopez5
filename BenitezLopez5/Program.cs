@@ -25,7 +25,7 @@ public class Program
         //File found tests
         Graph graph3 = new Graph ("/Users/izakbenitez-lopez/Desktop/OOP/BenitezLopez5/attempt.json");
 
-        for (int i = 0; i < 11; i++)
+        for (int i = 0; i < 12; i++)
         {
             Console.Write($"DFS {i}:  ");
             graph3.DepthFS(i);
